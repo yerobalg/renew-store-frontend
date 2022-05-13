@@ -61,6 +61,15 @@ const Index = () => {
     navigate(`/ubah-produk/${slug}`);
   };
 
+  const movePage = (page, keyword = "") => {
+    if (keyword == "")
+      setSearchParams({ page });
+    else
+      setSearchParams({ page, keyword });
+
+    getProdukFromApi();
+  }
+
   return (
     <>
       <div className="layout-wrapper layout-content-navbar">
@@ -80,6 +89,7 @@ const Index = () => {
                     currentPage={parseInt(page)}
                     totalPages={data.totalPages}
                     itemsPerPage={5}
+                    onChangePage={movePage}
                   />
                 )}
               </div>

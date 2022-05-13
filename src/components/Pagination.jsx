@@ -1,7 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const Pagination = ({ currentPage, totalPages, itemsPerPage }) => {
+const Pagination = ({
+  currentPage,
+  totalPages,
+  itemsPerPage,
+  onChangePage,
+}) => {
   let part = Math.ceil(currentPage / itemsPerPage);
 
   const start = itemsPerPage * part - (itemsPerPage - 1);
@@ -24,8 +29,10 @@ const Pagination = ({ currentPage, totalPages, itemsPerPage }) => {
     displayed.push(
       <li className="page-item prev" key={0}>
         <a
-          href={`/produk/?page=${currentPage - 1 > 0 ? currentPage - 1 : 1}`}
-          className="page-link"
+          className="page-link btn"
+          onClick={() =>
+            onChangePage(currentPage - 1 > 0 ? currentPage - 1 : 1)
+          }
         >
           <i className="tf-icon bx bx-chevron-left"></i>
         </a>
@@ -34,7 +41,7 @@ const Pagination = ({ currentPage, totalPages, itemsPerPage }) => {
     for (let i = start; i <= end; i++) {
       displayed.push(
         <li className={`page-item ${i == currentPage ? "active" : ""}`} key={i}>
-          <a href={`/produk/?page=${i}`} className="page-link">
+          <a className="page-link btn" onClick={() => onChangePage(i)}>
             {i}
           </a>
         </li>
@@ -43,10 +50,12 @@ const Pagination = ({ currentPage, totalPages, itemsPerPage }) => {
     displayed.push(
       <li className="page-item next" key={end + 1}>
         <a
-          href={`/produk/?page=${
-            currentPage + 1 <= totalPages ? currentPage + 1 : totalPages
-          }`}
-          className="page-link"
+          className="page-link btn"
+          onClick={() =>
+            onChangePage(
+              currentPage + 1 <= totalPages ? currentPage + 1 : totalPages
+            )
+          }
         >
           <i className="tf-icon bx bx-chevron-right"></i>
         </a>

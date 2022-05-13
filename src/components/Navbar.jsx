@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useKaryawanContext } from "../context/karyawanContext";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isProfileClicked, setIsProfileClicked] = useState(false);
   const profileClicked = () => {
     setIsProfileClicked(!isProfileClicked);
   };
   const { logout, karyawanInfo } = useKaryawanContext();
-  
 
   const openDashboard = () => {
     const html = document.getElementById("html");
     html.classList.add("layout-menu-expanded");
+  };
+
+  const searchHandler = (keyword) => {
+    window.location.assign(`/produk/?keyword=${keyword}`)
   };
   return (
     <>
@@ -36,6 +41,9 @@ const Navbar = () => {
                 className="form-control border-0 shadow-none"
                 placeholder="Cari Produk..."
                 aria-label="Search..."
+                onKeyPress={(e) =>
+                  e.key === "Enter" && searchHandler(e.target.value)
+                }
               />
             </div>
           </div>
@@ -85,10 +93,10 @@ const Navbar = () => {
                       </div>
                       <div className="flex-grow-1">
                         <span className="fw-semibold d-block">
-                        {karyawanInfo && karyawanInfo.name }
+                          {karyawanInfo && karyawanInfo.name}
                         </span>
                         <small className="text-muted">
-                         {karyawanInfo && karyawanInfo.role}
+                          {karyawanInfo && karyawanInfo.role}
                         </small>
                       </div>
                     </div>
