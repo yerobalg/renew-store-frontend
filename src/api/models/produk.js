@@ -1,9 +1,10 @@
 import { coreApi } from "../index";
 
-const getProduk = (page, keyword) => {
+const getProduk = (page, keyword, isAvailable = false) => {
   let url = `/product/?page=${page}`;
 
   if (keyword != "") url += `&keyword=${keyword}`;
+  if (isAvailable) url += `&is_available=1`;
 
   return coreApi.get(url);
 };
