@@ -9,17 +9,22 @@ import UpdateProduct from "../pages/UpdateProduct";
 import Transaction from "../pages/Transaction";
 import Transactions from "../pages/Transactions";
 import Invoice from "../pages/Invoice";
+import NotFound from "../pages/NotFound";
 
 const Routers = () => {
   return (
-    <BrowserRouter forceRefresh>
+    <BrowserRouter>
       <KaryawanWrapper>
         <Routes>
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Navigate to="/produk" />} />
             <Route path="/produk" element={<Index />} />
             <Route path="/tambah-produk" exact element={<AddProduct />} />
-            <Route path="/ubah-produk/:slug" exact element={<UpdateProduct />} />
+            <Route
+              path="/ubah-produk/:slug"
+              exact
+              element={<UpdateProduct />}
+            />
             <Route path="/tambah-transaksi" exact element={<Transaction />} />
             <Route path="/transaksi" exact element={<Transactions />} />
             <Route path="/invoice/:id" exact element={<Invoice />} />
@@ -27,6 +32,7 @@ const Routers = () => {
           <Route element={<AuthRoute />}>
             <Route path="/login" element={<Login />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </KaryawanWrapper>
     </BrowserRouter>
