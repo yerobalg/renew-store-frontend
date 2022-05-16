@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import SelectProduct from "./SelectProduct";
 import { formatPrice } from "../helpers";
-import { getProduk } from "../api/models/produk";
 
 const TransactionList = ({
   productToBuy,
@@ -15,7 +14,6 @@ const TransactionList = ({
   const addNewProductHandler = (event) => {
     event.preventDefault();
     onAddProduct();
-    console.log(productToBuy.length);
   };
 
   const removeProductHandler = (index, event) => {

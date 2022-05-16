@@ -22,7 +22,6 @@ const getProdukBySlug = (slug) => {
 }
 
 const deleteProduk = (slug) => {
-  console.log(slug);
   return coreApi.delete(`/product/${slug}`);
 };
 

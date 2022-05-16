@@ -11,7 +11,6 @@ import Transactions from "../pages/Transactions";
 import Invoice from "../pages/Invoice";
 
 const Routers = () => {
-  console.log("di router");
   return (
     <BrowserRouter forceRefresh>
       <KaryawanWrapper>
@@ -23,7 +22,7 @@ const Routers = () => {
             <Route path="/ubah-produk/:slug" exact element={<UpdateProduct />} />
             <Route path="/tambah-transaksi" exact element={<Transaction />} />
             <Route path="/transaksi" exact element={<Transactions />} />
-            <Route path="/invoice" exact element={<Invoice />} />
+            <Route path="/invoice/:id" exact element={<Invoice />} />
           </Route>
           <Route element={<AuthRoute />}>
             <Route path="/login" element={<Login />} />

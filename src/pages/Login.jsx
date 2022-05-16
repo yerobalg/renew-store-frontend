@@ -5,19 +5,14 @@ import { useKaryawanContext } from "../context/karyawanContext";
 import Spinner from "../components/Spinner";
 
 const Login = () => {
-  //second : init variable
-  //first: target variable
-  //setfirst: function that can change the variable
   const [isLoading, setIsLoading] = useState(false);
-  const [isValid, setIsValid] = useState(true);
   const [errMsg, setErrMsg] = useState(null);
   const [hideBox, setHideBox] = useState(true);
+
   let formData = {
     username: "",
     password: "",
   };
-
-  const [inputData, setInputData] = useState(formData);
 
   const username = useRef();
   const password = useRef();
@@ -30,7 +25,6 @@ const Login = () => {
 
   const formSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log(username.current.value);
     formData = {
       username: username.current.value,
       password: password.current.value,

@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useKaryawanContext } from "../context/karyawanContext";
 
 const Navbar = () => {
-  const navigate = useNavigate();
   const [isProfileClicked, setIsProfileClicked] = useState(false);
   const profileClicked = () => {
     setIsProfileClicked(!isProfileClicked);
@@ -62,7 +60,7 @@ const Navbar = () => {
                     onClick={profileClicked}
                     src={
                       window.location.origin +
-                      "/components/assets/img/avatars/6.png"
+                      "/components/assets/img/avatars/8.png"
                     }
                     alt={"true"}
                     className="w-px-40 h-auto rounded-circle"
@@ -84,7 +82,7 @@ const Navbar = () => {
                           <img
                             src={
                               window.location.origin +
-                              "/components/assets/img/avatars/6.png"
+                              "/components/assets/img/avatars/8.png"
                             }
                             alt={"true"}
                             className="w-px-40 h-auto rounded-circle"

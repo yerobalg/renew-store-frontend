@@ -1,6 +1,50 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useParams } from "react-router-dom";
+import { getTransaksiById } from "../api/models/transaksi";
+import Spinner from "../components/Spinner";
+import InvoicePrint from "../components/InvoicePrint";
+import { useReactToPrint } from "react-to-print";
 
 const Invoice = () => {
+
+  useEffect(() => {
+    document.title = "Renew Store | Invoice";
+  }, []);
+  
+  const { id } = useParams();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [produk, setProduk] = useState([]);
+  const [dataTransaksi, setDataTransaksi] = useState({});
+  const [total, setTotal] = useState(0);
+
+  const curRef = useRef();
+
+  const getTransaksi = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const res = await getTransaksiById(id);
+      setProduk(res.data.data.ProductTransactions);
+      setTotal(res.data.data.total_price);
+      setDataTransaksi({ 
+        tanggal: res.data.data.createdAt,
+        id: res.data.data.id
+      });
+    } catch (error) {
+      alert(error.response.data.message)
+    }
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    getTransaksi();
+  }, [getTransaksi]);
+
+  const printHandler = useReactToPrint({
+    content: () => curRef.current,
+    copyStyles: true,
+  });
+
   return (
     <>
       <div className="layout-wrapper layout-content-navbar">
@@ -9,60 +53,24 @@ const Invoice = () => {
             <div className="container-xxl flex-grow-1 container-p-y">
               <div class="col-12 mx-auto">
                 <div class="card mb-3">
-                  <div class="card-body">
-                    <h3 class="card-title">Renew Store</h3>
-                    <p class="card-text">Alamat</p>
-                    
-                    <h1 class="card-title text-center">Invoice Pembelian</h1>
-                    <p class="card-title text-center">Tanggal</p>
-                    <div class="card">
-                      <div class="table-responsive text-nowrap">
-                        <table class="table">
-                          <thead>
-                            <tr>
-                              <th>No</th>
-                              <th>Nama Barang</th>
-                              <th>Jumlah</th>
-                              <th>Harga</th>
-                            </tr>
-                          </thead>
-                          <tbody class="table-border-bottom-0">
-                            <tr>
-                              <td>
-                                <strong>1</strong>
-                              </td>
-                              <td>Kabelasassssssssssssssss</td>
-                              <td>3</td>
-                              <td>Rp15.000</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <strong>1</strong>
-                              </td>
-                              <td>Kabel</td>
-                              <td>3</td>
-                              <td>Rp15.000</td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td></td>
-                              <td>
-                                <strong>Subtotal</strong>
-                              </td>
-                              <td>
-                                <strong>Rp90.000</strong>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
+                  {!isLoading ? (
+                    <div class="card-body">
+                      <InvoicePrint
+                        ref={curRef}
+                        produk={produk}
+                        total={total}
+                        data={dataTransaksi}
+                      />
+                      <button
+                        class="btn btn-info float-end mt-3"
+                        onClick={printHandler}
+                      >
+                        Print
+                      </button>
                     </div>
-                    <button
-                      class="btn btn-info float-end mt-3"
-                    >
-                      Print
-                    </button>
-                  </div>
+                  ) : (
+                    <Spinner />
+                  )}
                 </div>
               </div>
             </div>

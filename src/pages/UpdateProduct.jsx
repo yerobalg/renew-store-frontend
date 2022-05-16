@@ -9,6 +9,9 @@ import Spinner from "../components/Spinner";
 import { updateProduk, getProdukBySlug } from "../api/models/produk";
 
 const UpdateProduct = () => {
+  useEffect(() => {
+    document.title = "Renew Store | Ubah Produk";
+  }, []);
   const { slug } = useParams();
   const navigate = useNavigate();
 
@@ -23,9 +26,8 @@ const UpdateProduct = () => {
     try {
       const res = await getProdukBySlug(slug);
       setProduk(res.data.data);
-      console.log(res);
     } catch (error) {
-      console.error(error.response.data.message);
+      alert("Produk tidak ditemukan");
     }
     setIsLoadingForm(false);
   }, []);
@@ -35,7 +37,6 @@ const UpdateProduct = () => {
   }, [getProdukFromApi]);
 
   const updateProductHandler = async (name, sell_price, stock) => {
-    console.log(slug);
     setIsLoading(true);
     try {
       await updateProduk(slug, { name, sell_price, stock });

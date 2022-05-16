@@ -7,7 +7,6 @@ const SelectProduct = ({ index, onUpdateProduct }) => {
   const [input, setInput] = useState([]);
 
   const selectProductHandler = (e) => {
-    console.info(e);
     onUpdateProduct(index, e.value, e.maxStock, e.price);
   };
 

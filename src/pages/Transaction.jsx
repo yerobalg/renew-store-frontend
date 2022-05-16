@@ -6,6 +6,9 @@ import { addTransaksi } from "../api/models/transaksi";
 import { useNavigate } from "react-router-dom";
 
 const Transaction = () => {
+  useEffect(() => {
+    document.title = "Renew Store | Tambah Transaksi";
+  }, []);
   const baseProduct = {
     key: 0,
     slug: "",
@@ -20,7 +23,6 @@ const Transaction = () => {
 
   const appendBaseProduct = () => {
     setProductToBuy([...productToBuy, { ...baseProduct, key: number }]);
-    console.log(productToBuy.length);
   };
 
   useEffect(() => {
@@ -35,13 +37,11 @@ const Transaction = () => {
     setTotalPrice(
       productToBuy.reduce((acc, curr) => acc + curr.price * curr.quantity, 0)
     );
-    console.log("changed");
   }, [productToBuy]);
 
   const removeProduct = (index) => {
     productToBuy.splice(index, 1);
     setProductToBuy([...productToBuy]);
-    console.log(productToBuy);
   };
 
   const updateProduct = (index, slug, maxStock, price) => {
@@ -50,13 +50,11 @@ const Transaction = () => {
     productToBuy[index].maxStock = maxStock;
     productToBuy[index].price = price;
     setProductToBuy([...productToBuy]);
-    console.log(productToBuy);
   };
 
   const updateProductQuantity = (index, quantity) => {
     productToBuy[index].quantity = quantity;
     setProductToBuy([...productToBuy]);
-    console.log(productToBuy);
   };
 
   const submitHandler = async (event) => {
@@ -77,7 +75,7 @@ const Transaction = () => {
       const response = await addTransaksi(transactionBody);
       const data = response.data;
       alert(data.message);
-      navigate(`/invoice/${data.id_transaksi}`);
+      navigate(`/invoice/${data.data.id_transaksi}`);
     } catch (error) {
       alert(error.response.data.message);
     }

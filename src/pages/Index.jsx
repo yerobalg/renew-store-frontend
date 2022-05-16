@@ -16,15 +16,13 @@ const Index = () => {
   const page = searchParams.get("page") || "1";
   const keyword = searchParams.get("keyword") || "";
 
-  console.log(process.env.PUBLIC_URL);
-
   const getProdukFromApi = useCallback(async () => {
     setIsLoading(true);
     let response;
     try {
       response = await getProduk(page, keyword);
       setProduk(response.data.data.products);
-      setData({ ...response.data.data, products: undefined });
+      setData({ ...response.data, data: undefined });
     } catch (error) {}
     setIsLoading(false);
   }, []);
@@ -32,6 +30,10 @@ const Index = () => {
   useEffect(() => {
     getProdukFromApi();
   }, [getProdukFromApi]);
+
+  useEffect(() => {
+    document.title = "Renew Store | Produk";
+  }, []);
 
   const showProduk = () => {
     if (isLoading) return <Spinner />;
@@ -50,8 +52,7 @@ const Index = () => {
 
   const deleteProdukFromApi = async (id) => {
     if (window.confirm("Apakah anda yakin ingin menghapus produk ini?")) {
-      const res = await deleteProduk(id);
-      console.log(res.data);
+      await deleteProduk(id);
       window.alert("Produk berhasil dihapus");
       getProdukFromApi();
     }
@@ -62,13 +63,11 @@ const Index = () => {
   };
 
   const movePage = (page, keyword = "") => {
-    if (keyword == "")
-      setSearchParams({ page });
-    else
-      setSearchParams({ page, keyword });
+    if (keyword == "") setSearchParams({ page });
+    else setSearchParams({ page, keyword });
 
     getProdukFromApi();
-  }
+  };
 
   return (
     <>

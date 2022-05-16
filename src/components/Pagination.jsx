@@ -1,5 +1,4 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 
 const Pagination = ({
   currentPage,
@@ -10,8 +9,8 @@ const Pagination = ({
   let part = Math.ceil(currentPage / itemsPerPage);
 
   const start = itemsPerPage * part - (itemsPerPage - 1);
-  console.log(start);
   let end = start + itemsPerPage - 1;
+
 
   if (end > totalPages) end = totalPages;
 

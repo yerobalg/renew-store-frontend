@@ -32,25 +32,27 @@ export const KaryawanWrapper = ({ children }) => {
     setKaryawanInfo({});
     localStorage.removeItem("rs_token");
     coreApi.defaults.headers.common["Authorization"] = "";
-    console.debug("successfully logout");
   };
 
   const fetchKaryawan = async () => {
     try {
       const res = await getKaryawan();
+
       if (res.data.data) {
         setKaryawanInfo(res.data.data);
       }
     } catch (error) {
-      console.error(error.response?.data.message || error.message);
+      if (error.response.status === 401) {
+        logout();
+        return;
+      }
+      alert(error.response?.data.message || error.message);
     }
   };
 
   useEffect(() => {
     if (isAuthenticated) {
       fetchKaryawan();
-      // console.log(isAuthenticated);
-      // console.log(karyawanInfo);
     }
   }, [isAuthenticated]);
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +8,9 @@ import AddProductForm from "../components/AddProductForm";
 import { addProduct } from "../api/models/produk";
 
 const AddProduct = () => {
+  useEffect(() => {
+    document.title = "Renew Store | Tambah Produk";
+  }, []);
   const navigate = useNavigate();
   const [errorMsgName, setErrorMsgName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
