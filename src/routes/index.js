@@ -1,15 +1,40 @@
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { KaryawanWrapper } from "../context/karyawanContext";
 import AuthRoute from "./AuthRoute";
 import ProtectedRoute from "./ProtectedRoute";
 import Login from "../pages/Login";
 import Index from "../pages/Index";
-import AddProduct from "../pages/AddProduct";
-import UpdateProduct from "../pages/UpdateProduct";
-import Transaction from "../pages/Transaction";
-import Transactions from "../pages/Transactions";
-import Invoice from "../pages/Invoice";
 import NotFound from "../pages/NotFound";
+import Spinner from "../components/Spinner";
+
+const lazyRoutes = [
+  {
+    path: "/tambah-produk",
+    exact: true,
+    Element: lazy(() => import("../pages/AddProduct")),
+  },
+  {
+    path: "/ubah-produk/:slug",
+    exact: true,
+    Element: lazy(() => import("../pages/UpdateProduct")),
+  },
+  {
+    path: "/tambah-transaksi",
+    exact: true,
+    Element: lazy(() => import("../pages/Transaction")),
+  },
+  {
+    path: "/transaksi",
+    exact: true,
+    Element: lazy(() => import("../pages/Transactions")),
+  },
+  {
+    path: "/invoice/:id",
+    exact: true,
+    Element: lazy(() => import("../pages/Invoice")),
+  },
+];
 
 const Routers = () => {
   return (
@@ -19,15 +44,24 @@ const Routers = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Navigate to="/produk" />} />
             <Route path="/produk" element={<Index />} />
-            <Route path="/tambah-produk" exact element={<AddProduct />} />
-            <Route
-              path="/ubah-produk/:slug"
-              exact
-              element={<UpdateProduct />}
-            />
-            <Route path="/tambah-transaksi" exact element={<Transaction />} />
-            <Route path="/transaksi" exact element={<Transactions />} />
-            <Route path="/invoice/:id" exact element={<Invoice />} />
+            {lazyRoutes.map(({ path, exact, Element }, index) => (
+              <Route
+                key={index}
+                path={path}
+                exact={exact}
+                element={
+                  <Suspense
+                    fallback={
+                      <div className="container-xxl container-p-y">
+                        <Spinner />
+                      </div>
+                    }
+                  >
+                    <Element />
+                  </Suspense>
+                }
+              />
+            ))}
           </Route>
           <Route element={<AuthRoute />}>
             <Route path="/login" element={<Login />} />
